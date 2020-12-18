@@ -1,18 +1,29 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div class="home row">
+    <Create class="col-3"/>
+    <Welcome v-if="info.length == false" class="col" />
+    <TasksCreated v-else class="col" />
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
-
+import { mapState } from 'vuex'
+import Create from '@/components/Create.vue'
+import TasksCreated from '@/components/TasksCreated.vue'
+import Welcome from '@/components/Welcome.vue'
 export default {
   name: 'Home',
   components: {
-    HelloWorld
-  }
+    Create,
+    TasksCreated,
+    Welcome
+  },
+  computed: {
+        ...mapState(['info'])
+    }
 }
 </script>
+
+<style>
+  
+</style>
