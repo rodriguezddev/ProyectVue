@@ -31,7 +31,7 @@
                 </template>
             </vs-card>
             <DeleteModal :indexD="index"/>
-            <EditModal :index="index"/>
+            <EditModal :item="item" :index="index"/>
         </div>
 </template>
 <script>
@@ -46,6 +46,7 @@ export default {
     },
     data: () => ({
         index:0,
+        item:{}
     }),
     computed: {
         ...mapState(['info'])
@@ -55,7 +56,9 @@ export default {
             this.index = this.info.indexOf( item );
         },
         editModal(item){
+            this.item = item
             this.index = this.info.indexOf( item );
+            this.$store.commit('IndexModal', this.index)
             console.log(this.index)
         }
                 

@@ -8,12 +8,12 @@
                  <div class="modal-body">
                      <div class="box">
                         <label> Elige un titulo</label>
-                        <input v-model="titleN" class="input" placeholder="Ejem: Hacer las compras" type="text">
+                        <input v-model="item.title" class="input" placeholder="Ejem: Hacer las compras" type="text">
                     </div>
                     
                     <div class="box">
                         <label>Agrega una descripcion</label>
-                        <textarea v-model="descriptionN" class="feedback-input" cols="30" rows="5"></textarea>
+                        <textarea v-model="item.description" class="feedback-input" cols="30" rows="5"></textarea>
                     </div>
                 </div>
                 <div class="modal-footer border-0 justify-content-around">
@@ -40,11 +40,13 @@ import { mapState } from 'vuex'
 export default {
     name:'editModal',
     props:{
-        index: Number
+        index: Number,
+        item:{
+            type:Object,
+            required:true
+        }
     },
     data: () => ({
-        titleN:'',
-        descriptionN:'',
         date:'',
         time:'',
         random:0,
@@ -67,15 +69,15 @@ export default {
             this.time = today.getHours()+':'+today.getMinutes()
             this.random = Math.round(Math.random() * 10) 
 
-            this.newInfo.description = this.descriptionN
-            this.newInfo.title = this.titleN
+            this.newInfo.description = this.item.description
+            this.newInfo.title = this.item.title
             this.newInfo.random = this.random
             this.newInfo.date = this.date
             this.newInfo.time = this.time
-            this.info[this.index] = this.newInfo
             
-            this.$store.commit('EditTask', this.info);
-            console.log(this.newInfo)
+            this.$store.commit('EditTask', this.newInfo)
+            
+            console.log(this.info)
         }
     },
 }
