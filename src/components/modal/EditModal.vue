@@ -8,18 +8,19 @@
                  <div class="modal-body">
                      <div class="box">
                         <label> Elige un titulo</label>
-                        <input v-model="item.title" class="input" placeholder="Ejem: Hacer las compras" type="text">
+                        <input v-model="titleEdit" class="input" @input="buttonDisabled()" placeholder="Ejem: Hacer las compras" type="text">
                     </div>
                     
                     <div class="box">
                         <label>Agrega una descripcion</label>
-                        <textarea v-model="item.description" class="feedback-input" cols="30" rows="5"></textarea>
+                        <textarea v-model="descriptionEdit" class="feedback-input"  @input="buttonDisabled()" cols="30" rows="5"></textarea>
                     </div>
                 </div>
-                <div class="modal-footer border-0 justify-content-around">
+                <div class="modal-footer border-0 justify-content-end">
                      <button
-                        class="button buttonU buttonFocus"
+                        class="button buttonU buttonFocus ml-3"
                         data-dismiss="modal"
+                        @click="clearEdit()"
                         >
                         Cancelar
                     </button>
@@ -27,8 +28,9 @@
                         class="button buttonD buttonFocus"
                         data-dismiss="modal"
                         @click="editTask()"
+                        :disabled="isDisabled"
                         >
-                        Guaradar cambios
+                        Guaradar
                     </button>
                 </div>
             </div>
@@ -50,35 +52,75 @@ export default {
         date:'',
         time:'',
         random:0,
-        newInfo:{
-            title: '',
-            description: '',
-            random: '',
-            date:'',
-            time:''
-        }
+        descriptionEdit:'',
+        titleEdit:'',
+        objEdit:{},
+        isDisabled:true
+        
     }),
         computed: {
         ...mapState(['info'])
     },
-
     methods: {
         editTask(){
-            var today = new Date();
-            this.date = today.getDate() +'/'+(today.getMonth() + 1)+'/'+today.getFullYear();
-            this.time = today.getHours()+':'+today.getMinutes()
-            this.random = Math.round(Math.random() * 10) 
-
-            this.newInfo.description = this.item.description
-            this.newInfo.title = this.item.title
-            this.newInfo.random = this.random
-            this.newInfo.date = this.date
-            this.newInfo.time = this.time
-            
-            this.$store.commit('EditTask', this.newInfo)
-            
-            console.log(this.info)
+            var infoLocal = localStorage.getItem('info')
+            this.info = JSON.parse(infoLocal)
+            if(this.titleEdit != '' && this.descriptionEdit != ''){
+                 var today = new Date();
+                this.date = today.getDate() +'/'+(today.getMonth() + 1)+'/'+today.getFullYear();
+                this.time = today.getHours()+':'+today.getMinutes() 
+                    this.objEdit = {
+                    description: this.descriptionEdit,
+                    title:this.titleEdit,
+                    date: this.date,
+                    time:this.time,
+                    random:this.item.random,
+                    selected:this.item.selected,
+                    id:this.item.id,
+                    fav:this.item.fav,
+                    check:this.item.check
+                }
+                var index = this.info.indexOf( this.item )
+                this.info[index] = this.objEdit
+                localStorage.setItem('info',JSON.stringify(this.info))
+                this.$store.commit('createTask');
+                this.descriptionEdit = ''
+                this.titleEdit = ''
+                this.notificationEditCheck()
+            }else {
+                this.notificationEditFail()
+            }
+           
+        },
+        notificationEditCheck(){
+                const noti = this.$vs.notification({
+                        position:'top-right',
+                        color: 'success',
+                        title: 'Enhorabuena!',
+                        text: `Tu tarea se ha editado con éxito 👍`
+                    })
+            },
+        notificationEditFail(){
+                const noti = this.$vs.notification({
+                        position:'bottom-right',
+                        color: 'danger',
+                        title: 'Oh no!',
+                        text: `No puedes guardar una tarea vacia 😢`
+                    })
+        },
+        buttonDisabled(){
+            if(this.titleEdit != '' && this.descriptionEdit != ''){
+                this.isDisabled = false
+            } else {
+                 this.isDisabled = true
+            }
+        },
+        clearEdit(){
+            this.descriptionEdit = ''
+            this.titleEdit = ''
         }
-    },
+
+    }
+    
 }
 </script>

@@ -26,8 +26,6 @@
     </div>
 </template>
 <script>
-import { mapMutations } from 'vuex'
-
 export default {
     name:'Create',
      data:() => ({
@@ -37,14 +35,23 @@ export default {
         date:'',
         time:'',
         random:0,
-        info:[]
+        info:[],
+        id:0,
+        fav: false,
+        check:false,
+        selected:false
       }),
       methods: {
             ColorVuesax(){
+                var infoLocal = localStorage.getItem('info')
+                this.info = JSON.parse(infoLocal)
+
                 var today = new Date();
                 this.date = today.getDate() +'/'+(today.getMonth() + 1)+'/'+today.getFullYear();
                 this.time = today.getHours()+':'+today.getMinutes()
                 this.random = Math.round(Math.random() * 10) 
+                this.id = this.info.length
+                
                 
                  if(this.title != '' && this.description != ''){
                         this.info.push({
@@ -52,10 +59,16 @@ export default {
                         description: this.description,
                         random: this.random,
                         date:this.date,
-                        time:this.time
+                        time:this.time,
+                        id:this.id,
+                        fav:this.fav,
+                        check: this.check,
+                        selected:this.selected
                     })
-                        this.$store.commit('createTask', this.info);
+                    localStorage.setItem('info',JSON.stringify(this.info))
+                        this.$store.commit('createTask');
                         this.notificationCheck()
+                        console.log(this.info)
                 } else {
                    
                     this.notificationFail()
@@ -103,6 +116,9 @@ export default {
         display: flex;
         flex-direction: column;
         justify-content: space-around;
+        height: 70vh;
+        min-height: 20rem;
+        margin: 0 2rem;
     }
     .box {
         display:flex;
@@ -135,22 +151,38 @@ export default {
         margin-top:1rem;
     }
     .button{
-        padding: 0.1rem 0.4rem !important;
+           padding: 0.5rem 0.8rem;
     }
    
     .buttonU{
         border: solid #93b8e8 1px;
         color: #93b8e8;
         border-radius: 0.5rem;
-        width: 6vw;
-        height: 3vw;
     }
     .buttonD {
         background: linear-gradient(75deg, #3F8DFF, #653FFF);
         border: none;
         color: #fff;
-        width: 6vw;
-        height: 3vw;
         border-radius: 0.5rem;
     }
+    @media (max-width: 979px) {
+        .create {
+        padding: 1rem;
+        margin: 3rem 0;
+        border: solid 1px #8e8b8b;
+        border-radius: 1rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        height: 55vh;
+    }
+     .contButtons{
+        display:flex;
+        justify-content: flex-end;
+        margin-top:1rem;
+    }
+    .button{
+        margin: 0 1rem;
+    }
+   }
 </style>

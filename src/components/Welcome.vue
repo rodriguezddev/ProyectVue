@@ -12,6 +12,7 @@ export default {
 <style>
     .contIni{
         color: #e7e7e7;
+        height: 100%;
     }
     .contIni h1{
         font-size: 4rem;

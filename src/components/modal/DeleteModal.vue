@@ -3,7 +3,7 @@
         <div class="modal-dialog modal-dialog-centered modal-sm">
             <div class="modal-content border-0">
                 <div class="modal-header border-0 justify-content-center">
-                    <h5 class="modal-title titleModal text-center">Quieres eliminar esta tarea? </h5>
+                    <h5 class="modal-title titleModal text-center">Seguro de eliminar esta tarea? </h5>
                 </div>
                 <div class="modal-footer border-0 justify-content-around">
                      <button
@@ -25,6 +25,7 @@
     </div>
 </template>
 <script>
+
 export default {
     name:'DeleteModal',
     props:{
