@@ -7,7 +7,7 @@
                 </button>
                 <div v-else>
                     <vs-alert class="alert">
-                    Para eliminar tareas es grupo, puede seleccionarlas y luego dar click en el icono de eliminar que aparecerá
+                    Para eliminar tareas en grupo, puede seleccionarlas y luego dar click en el icono de eliminar que aparecerá
                     </vs-alert>                
                 </div>
                 <template #tooltip>
