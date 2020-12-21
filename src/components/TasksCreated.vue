@@ -5,11 +5,6 @@
                 <button class="bottonDeleteGroup buttonFocus" v-if="groupSelect.length != 0" data-toggle="modal" data-target=".deleteGroup">
                     <span class="iconify" data-icon="wpf:delete" data-inline="false"></span>    
                 </button>
-                <div v-else>
-                    <vs-alert class="alert">
-                    Para eliminar tareas en grupo, puede seleccionarlas y luego dar click en el icono de eliminar que aparecerá
-                    </vs-alert>                
-                </div>
                 <template #tooltip>
                     Eliminar en grupo
                 </template>
